@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './Home';
 import Playlist from './Playlist';
 import Translator from './Translator';
+import Exchange from './Exchange';
+import Navigation from './Navigation';
 import './App.css';
 
 function App() {
@@ -13,11 +15,15 @@ function App() {
         <div className="cyber-glow"></div>
         <div className="cyber-scanline"></div>
       </div>
+      
+      <Navigation />
+      
       <div className="app-content">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/playlist" element={<Playlist />} />
           <Route path="/translator" element={<Translator />} />
+          <Route path="/exchange" element={<Exchange />} />
         </Routes>
       </div>
     </Router>

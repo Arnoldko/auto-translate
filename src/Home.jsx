@@ -16,6 +16,11 @@ const Home = () => {
             <span className="icon-text">동시통역</span>
           </div>
         </Link>
+        <Link to="/exchange" className="menu-item">
+          <div className="icon-square exchange-icon">
+            <span className="icon-text">환율계산</span>
+          </div>
+        </Link>
       </div>
     </div>
   );

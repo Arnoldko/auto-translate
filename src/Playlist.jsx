@@ -15,6 +15,7 @@ function Playlist() {
   const playerRef = useRef(null);
 
   const handleUrlChange = (index, value) => {
+    console.log(`[Input] URL changed at index ${index}:`, value);
     const newUrls = [...urls];
     newUrls[index] = value;
     setUrls(newUrls);
@@ -24,42 +25,56 @@ function Playlist() {
   const getPlayableUrl = (url) => {
     if (!url) return url;
     try {
+      console.log('[Debug] Raw URL:', url);
       // If it's a short url (youtu.be), convert to standard
       if (url.includes('youtu.be')) {
         const id = url.split('youtu.be/')[1]?.split('?')[0];
-        if (id) return `https://www.youtube.com/watch?v=${id}`;
+        if (id) {
+            const newUrl = `https://www.youtube.com/watch?v=${id}`;
+            console.log('[Debug] Converted URL:', newUrl);
+            return newUrl;
+        }
       }
       return url;
     } catch (e) {
+      console.error('[Debug] URL Conversion Error:', e);
       return url;
     }
   };
 
   const startPlaylist = () => {
+    console.log('[Action] Start Playlist clicked');
     setPlayerError(null);
     // Find first non-empty URL
     const firstIndex = urls.findIndex(url => url.trim() !== '');
+    console.log('[Debug] First valid URL index:', firstIndex);
+    
     if (firstIndex !== -1) {
       setCurrentUrlIndex(firstIndex);
       setIsPlaying(true);
+      console.log('[State] Setting playing to true for index:', firstIndex);
     } else {
       alert('Please enter at least one YouTube URL.');
     }
   };
 
   const handleEnded = () => {
+    console.log('[Event] Song ended');
     const nextIndex = urls.findIndex((url, i) => i > currentUrlIndex && url.trim() !== '');
     
     if (nextIndex !== -1) {
       // Play next song
       setCurrentUrlIndex(nextIndex);
       setIsPlaying(true); // Ensure it keeps playing
+      console.log('[Action] Playing next song at index:', nextIndex);
     } else {
       // End of playlist
       if (isLooping) {
         // Loop back to start
+        console.log('[Action] Looping back to start');
         startPlaylist();
       } else {
+        console.log('[Action] Playlist finished');
         setIsPlaying(false);
         setCurrentUrlIndex(-1); // Reset or keep last? Let's reset for now or just stop.
       }
@@ -67,15 +82,19 @@ function Playlist() {
   };
 
   const handlePlaySpecific = (index) => {
+    console.log(`[Action] Play specific clicked for index ${index}`);
     if (urls[index].trim() !== '') {
       setPlayerError(null);
       setCurrentUrlIndex(index);
       setIsPlaying(true);
+      console.log('[State] Setting playing to true');
+    } else {
+        console.log('[Warn] Url is empty');
     }
   };
 
   const handleError = (e) => {
-    console.error("Player Error:", e);
+    console.error("Player Error Event:", e);
     setPlayerError("동영상을 재생할 수 없습니다.");
   };
 
@@ -126,9 +145,18 @@ function Playlist() {
                 width="100%"
                 height="100%"
                 onEnded={handleEnded}
-                onPlay={() => setIsPlaying(true)}
-                onPause={() => setIsPlaying(false)}
+                onPlay={() => {
+                  setIsPlaying(true);
+                  logToDebug('[Event] Player onPlay');
+                }}
+                onPause={() => {
+                  setIsPlaying(false);
+                  logToDebug('[Event] Player onPause');
+                }}
                 onError={handleError}
+                onReady={() => logToDebug('[Event] Player Ready')}
+                onStart={() => logToDebug('[Event] Player Started')}
+                onBuffer={() => logToDebug('[Event] Player Buffering')}
                 // youtube config for playsinline (helps with mobile background/screen off to some extent)
                 config={{
                   youtube: {
