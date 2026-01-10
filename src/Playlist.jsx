@@ -9,6 +9,7 @@ function Playlist() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLooping, setIsLooping] = useState(false);
   const [playbackHistory, setPlaybackHistory] = useState([]);
+  const [playerError, setPlayerError] = useState(null);
   
   // Ref for the player
   const playerRef = useRef(null);
@@ -92,7 +93,7 @@ function Playlist() {
                 </div>
               )}
               <ReactPlayer
-                key={urls[currentUrlIndex]} /* Force remount on URL change */
+                /* key={urls[currentUrlIndex]} Removed to prevent crash loop */
                 className="react-player"
                 ref={playerRef}
                 url={urls[currentUrlIndex]}
