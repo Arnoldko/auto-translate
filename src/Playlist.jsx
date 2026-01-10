@@ -21,6 +21,7 @@ function Playlist() {
   };
 
   const startPlaylist = () => {
+    setPlayerError(null);
     // Find first non-empty URL
     const firstIndex = urls.findIndex(url => url.trim() !== '');
     if (firstIndex !== -1) {
