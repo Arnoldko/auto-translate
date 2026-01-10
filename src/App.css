@@ -719,6 +719,7 @@ body {
 
 .currency-input {
   width: 100%;
+  box-sizing: border-box; /* Fix overflow issue */
   background: var(--input-bg);
   border: 1px solid var(--border-color);
   border-radius: 8px;
