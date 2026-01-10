@@ -14,6 +14,10 @@ function Playlist() {
   // Ref for the player
   const playerRef = useRef(null);
 
+  const logToDebug = (msg) => {
+    console.log(msg);
+  };
+
   const handleUrlChange = (index, value) => {
     console.log(`[Input] URL changed at index ${index}:`, value);
     const newUrls = [...urls];
