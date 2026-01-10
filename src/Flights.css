@@ -323,8 +323,47 @@
   background: rgba(255, 255, 255, 0.1);
 }
 
+/* Trip Type Selector */
+.trip-type-selector {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.trip-type-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  padding: 10px 20px;
+  border-radius: 25px;
+  background: rgba(255, 255, 255, 0.05);
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+  font-weight: 500;
+}
+
+.trip-type-option:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.trip-type-option.active {
+  background: rgba(0, 243, 255, 0.15);
+  border-color: var(--primary);
+  color: var(--primary);
+  box-shadow: 0 0 15px rgba(0, 243, 255, 0.1);
+}
+
+.trip-type-option input {
+  display: none;
+}
+
 /* Mobile Responsive */
 @media (max-width: 600px) {
+  .trip-type-selector {
+    justify-content: center;
+  }
+  
   .route-selection {
     flex-direction: column;
   }

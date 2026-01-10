@@ -2,18 +2,87 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Flights.css';
 
-// Mock Country Data
+// Mock Country & City Data
 const COUNTRIES = [
-  { code: 'KR', name: 'South Korea', flag: 'kr', airport: 'ICN' },
-  { code: 'US', name: 'United States', flag: 'us', airport: 'JFK' },
-  { code: 'JP', name: 'Japan', flag: 'jp', airport: 'NRT' },
-  { code: 'CN', name: 'China', flag: 'cn', airport: 'PEK' },
-  { code: 'VN', name: 'Vietnam', flag: 'vn', airport: 'SGN' },
-  { code: 'TH', name: 'Thailand', flag: 'th', airport: 'BKK' },
-  { code: 'FR', name: 'France', flag: 'fr', airport: 'CDG' },
-  { code: 'GB', name: 'United Kingdom', flag: 'gb', airport: 'LHR' },
-  { code: 'DE', name: 'Germany', flag: 'de', airport: 'FRA' },
-  { code: 'AU', name: 'Australia', flag: 'au', airport: 'SYD' },
+  { 
+    code: 'KR', name: 'South Korea', flag: 'kr',
+    cities: [
+      { code: 'ICN', name: 'Seoul (Incheon)' },
+      { code: 'GMP', name: 'Seoul (Gimpo)' },
+      { code: 'PUS', name: 'Busan' },
+      { code: 'CJU', name: 'Jeju' }
+    ]
+  },
+  { 
+    code: 'US', name: 'United States', flag: 'us',
+    cities: [
+      { code: 'JFK', name: 'New York (JFK)' },
+      { code: 'LAX', name: 'Los Angeles' },
+      { code: 'SFO', name: 'San Francisco' },
+      { code: 'ORD', name: 'Chicago' }
+    ]
+  },
+  { 
+    code: 'JP', name: 'Japan', flag: 'jp',
+    cities: [
+      { code: 'NRT', name: 'Tokyo (Narita)' },
+      { code: 'HND', name: 'Tokyo (Haneda)' },
+      { code: 'KIX', name: 'Osaka (Kansai)' },
+      { code: 'FUK', name: 'Fukuoka' }
+    ]
+  },
+  { 
+    code: 'CN', name: 'China', flag: 'cn',
+    cities: [
+      { code: 'PEK', name: 'Beijing' },
+      { code: 'PVG', name: 'Shanghai' },
+      { code: 'CAN', name: 'Guangzhou' }
+    ]
+  },
+  { 
+    code: 'VN', name: 'Vietnam', flag: 'vn',
+    cities: [
+      { code: 'SGN', name: 'Ho Chi Minh' },
+      { code: 'HAN', name: 'Hanoi' },
+      { code: 'DAD', name: 'Da Nang' }
+    ]
+  },
+  { 
+    code: 'TH', name: 'Thailand', flag: 'th',
+    cities: [
+      { code: 'BKK', name: 'Bangkok' },
+      { code: 'HKT', name: 'Phuket' },
+      { code: 'CNX', name: 'Chiang Mai' }
+    ]
+  },
+  { 
+    code: 'FR', name: 'France', flag: 'fr',
+    cities: [
+      { code: 'CDG', name: 'Paris (CDG)' },
+      { code: 'NCE', name: 'Nice' }
+    ]
+  },
+  { 
+    code: 'GB', name: 'United Kingdom', flag: 'gb',
+    cities: [
+      { code: 'LHR', name: 'London (Heathrow)' },
+      { code: 'MAN', name: 'Manchester' }
+    ]
+  },
+  { 
+    code: 'DE', name: 'Germany', flag: 'de',
+    cities: [
+      { code: 'FRA', name: 'Frankfurt' },
+      { code: 'MUC', name: 'Munich' }
+    ]
+  },
+  { 
+    code: 'AU', name: 'Australia', flag: 'au',
+    cities: [
+      { code: 'SYD', name: 'Sydney' },
+      { code: 'MEL', name: 'Melbourne' }
+    ]
+  },
 ];
 
 const AIRLINES = [
@@ -27,62 +96,130 @@ const AIRLINES = [
   { name: 'Lufthansa', logo: '🦅' },
 ];
 
-const CountrySelector = ({ label, value, onChange }) => {
+const LocationSelector = ({ label, value, onChange }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [step, setStep] = useState('country'); // 'country' or 'city'
+  const [selectedCountryCode, setSelectedCountryCode] = useState(value.country);
   const dropdownRef = useRef(null);
 
-  const selectedCountry = COUNTRIES.find(c => c.code === value);
+  const selectedCountry = COUNTRIES.find(c => c.code === value.country);
+  const selectedCity = selectedCountry?.cities.find(c => c.code === value.city);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setIsOpen(false);
+        setStep('country'); // Reset step on close
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const handleSelect = (code) => {
-    onChange(code);
+  // Update internal state when external value changes
+  useEffect(() => {
+    setSelectedCountryCode(value.country);
+  }, [value.country]);
+
+  const handleCountrySelect = (code) => {
+    setSelectedCountryCode(code);
+    setStep('city');
+  };
+
+  const handleCitySelect = (cityCode) => {
+    onChange({ country: selectedCountryCode, city: cityCode });
     setIsOpen(false);
+    setStep('country');
+  };
+
+  const handleBackToCountry = (e) => {
+    e.stopPropagation();
+    setStep('country');
   };
 
   return (
     <div className="location-input" ref={dropdownRef}>
       <label style={{display: 'block', marginBottom: '5px', fontSize: '0.9rem', color: 'var(--text-secondary)'}}>{label}</label>
       <div className="country-select-trigger" onClick={() => setIsOpen(!isOpen)}>
-        {selectedCountry ? (
-          <>
+        {selectedCountry && selectedCity ? (
+          <div style={{display: 'flex', alignItems: 'center', gap: '10px', width: '100%'}}>
             <img 
               src={`https://flagcdn.com/w40/${selectedCountry.flag}.png`} 
               alt={selectedCountry.name} 
               className="country-flag"
             />
-            <span>{selectedCountry.name} ({selectedCountry.airport})</span>
-          </>
+            <div style={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start', flex: 1}}>
+              <span style={{fontWeight: 'bold', fontSize: '1.1rem'}}>{selectedCity.name}</span>
+              <span style={{fontSize: '0.8rem', color: 'var(--text-secondary)'}}>{selectedCountry.name}, {selectedCity.code}</span>
+            </div>
+          </div>
         ) : (
-          <span>Select Country</span>
+          <span>Select Location</span>
         )}
         <span className="arrow">▼</span>
       </div>
       
       {isOpen && (
         <div className="country-options">
-          {COUNTRIES.map(country => (
-            <div 
-              key={country.code} 
-              className="country-option"
-              onClick={() => handleSelect(country.code)}
-            >
-              <img 
-                src={`https://flagcdn.com/w40/${country.flag}.png`} 
-                alt={country.name} 
-                className="country-flag"
-              />
-              <span>{country.name} ({country.airport})</span>
-            </div>
-          ))}
+          {step === 'country' ? (
+            <>
+              <div style={{padding: '10px', fontSize: '0.9rem', fontWeight: 'bold', color: 'var(--text-secondary)', borderBottom: '1px solid rgba(255,255,255,0.1)'}}>
+                Select Country
+              </div>
+              {COUNTRIES.map(country => (
+                <div 
+                  key={country.code} 
+                  className="country-option"
+                  onClick={() => handleCountrySelect(country.code)}
+                >
+                  <img 
+                    src={`https://flagcdn.com/w40/${country.flag}.png`} 
+                    alt={country.name} 
+                    className="country-flag"
+                  />
+                  <span>{country.name}</span>
+                  <span style={{marginLeft: 'auto', fontSize: '0.8rem', color: 'var(--text-secondary)'}}>›</span>
+                </div>
+              ))}
+            </>
+          ) : (
+            <>
+              <div 
+                style={{
+                  padding: '10px', 
+                  fontSize: '0.9rem', 
+                  fontWeight: 'bold', 
+                  color: 'var(--text-secondary)', 
+                  borderBottom: '1px solid rgba(255,255,255,0.1)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  cursor: 'pointer',
+                  background: 'rgba(255,255,255,0.05)'
+                }}
+                onClick={handleBackToCountry}
+              >
+                <span style={{marginRight: '10px'}}>←</span>
+                <img 
+                  src={`https://flagcdn.com/w20/${COUNTRIES.find(c => c.code === selectedCountryCode)?.flag}.png`} 
+                  alt="flag" 
+                  style={{width: '20px', marginRight: '8px', borderRadius: '2px'}}
+                />
+                {COUNTRIES.find(c => c.code === selectedCountryCode)?.name}
+              </div>
+              {COUNTRIES.find(c => c.code === selectedCountryCode)?.cities.map(city => (
+                <div 
+                  key={city.code} 
+                  className="country-option"
+                  onClick={() => handleCitySelect(city.code)}
+                >
+                  <div style={{display: 'flex', flexDirection: 'column'}}>
+                    <span style={{fontWeight: 'bold'}}>{city.name}</span>
+                    <span style={{fontSize: '0.8rem', color: 'var(--text-secondary)'}}>{city.code}</span>
+                  </div>
+                </div>
+              ))}
+            </>
+          )}
         </div>
       )}
     </div>
@@ -90,9 +227,11 @@ const CountrySelector = ({ label, value, onChange }) => {
 };
 
 const Flights = () => {
-  const [origin, setOrigin] = useState('KR');
-  const [destination, setDestination] = useState('US');
-  const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
+  const [origin, setOrigin] = useState({ country: 'KR', city: 'ICN' });
+  const [destination, setDestination] = useState({ country: 'US', city: 'JFK' });
+  const [tripType, setTripType] = useState('round-trip'); // 'one-way', 'round-trip'
+  const [departureDate, setDepartureDate] = useState(new Date().toISOString().split('T')[0]);
+  const [returnDate, setReturnDate] = useState(new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]);
   const [isDirect, setIsDirect] = useState(false);
   const [sortOption, setSortOption] = useState('price_asc'); // price_asc, time_asc, time_desc
   const [results, setResults] = useState([]);
@@ -119,9 +258,12 @@ const Flights = () => {
         // Skip if user wants direct only and this flight isn't
         if (isDirect && !isFlightDirect) continue;
 
-        const basePrice = Math.floor(Math.random() * 1000) + 300;
+        let basePrice = Math.floor(Math.random() * 1000) + 300;
         const price = isFlightDirect ? basePrice + 200 : basePrice; // Direct usually more expensive
         
+        // Adjust price for round trip
+        const finalPrice = tripType === 'round-trip' ? Math.floor(price * 1.8) : price;
+
         const hour = Math.floor(Math.random() * 24);
         const minute = Math.floor(Math.random() * 60);
         const depTime = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
@@ -135,13 +277,14 @@ const Flights = () => {
         mockResults.push({
           id: i,
           airline: airline,
-          price: price,
+          price: finalPrice,
           departureTime: depTime,
           arrivalTime: arrTime,
           duration: `${durationHours}h ${Math.floor(Math.random() * 60)}m`,
           isDirect: isFlightDirect,
-          origin: COUNTRIES.find(c => c.code === origin).airport,
-          destination: COUNTRIES.find(c => c.code === destination).airport
+          originCode: origin.city,
+          destinationCode: destination.city,
+          tripType: tripType
         });
       }
 
@@ -172,8 +315,32 @@ const Flights = () => {
       </div>
 
       <div className="search-panel">
+        {/* Trip Type Selection */}
+        <div className="trip-type-selector">
+          <label className={`trip-type-option ${tripType === 'one-way' ? 'active' : ''}`}>
+            <input 
+              type="radio" 
+              name="tripType" 
+              value="one-way"
+              checked={tripType === 'one-way'}
+              onChange={() => setTripType('one-way')}
+            />
+            One-way
+          </label>
+          <label className={`trip-type-option ${tripType === 'round-trip' ? 'active' : ''}`}>
+            <input 
+              type="radio" 
+              name="tripType" 
+              value="round-trip"
+              checked={tripType === 'round-trip'}
+              onChange={() => setTripType('round-trip')}
+            />
+            Round-trip
+          </label>
+        </div>
+
         <div className="route-selection">
-          <CountrySelector 
+          <LocationSelector 
             label="From" 
             value={origin} 
             onChange={setOrigin} 
@@ -183,7 +350,7 @@ const Flights = () => {
             ⇄
           </button>
           
-          <CountrySelector 
+          <LocationSelector 
             label="To" 
             value={destination} 
             onChange={setDestination} 
@@ -192,14 +359,27 @@ const Flights = () => {
 
         <div className="flight-options">
           <div className="date-picker">
-            <label style={{display: 'block', marginBottom: '5px', fontSize: '0.9rem', color: 'var(--text-secondary)'}}>Date</label>
+            <label style={{display: 'block', marginBottom: '5px', fontSize: '0.9rem', color: 'var(--text-secondary)'}}>Departure</label>
             <input 
               type="date" 
               className="date-input" 
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
+              value={departureDate}
+              onChange={(e) => setDepartureDate(e.target.value)}
             />
           </div>
+
+          {tripType === 'round-trip' && (
+            <div className="date-picker">
+              <label style={{display: 'block', marginBottom: '5px', fontSize: '0.9rem', color: 'var(--text-secondary)'}}>Return</label>
+              <input 
+                type="date" 
+                className="date-input" 
+                value={returnDate}
+                onChange={(e) => setReturnDate(e.target.value)}
+                min={departureDate}
+              />
+            </div>
+          )}
 
           <div className="checkbox-wrapper" onClick={() => setIsDirect(!isDirect)}>
             <input 
@@ -262,9 +442,14 @@ const Flights = () => {
                   <span>{flight.arrivalTime}</span>
                 </div>
                 <div style={{display: 'flex', justifyContent: 'space-between', width: '100%', marginTop: '5px', fontSize: '0.9rem', color: 'var(--text-secondary)'}}>
-                  <span>{flight.origin}</span>
-                  <span>{flight.destination}</span>
+                  <span>{flight.originCode}</span>
+                  <span>{flight.destinationCode}</span>
                 </div>
+                {flight.tripType === 'round-trip' && (
+                  <div style={{textAlign: 'center', fontSize: '0.8rem', color: 'var(--accent-color)', marginTop: '5px'}}>
+                    Round Trip
+                  </div>
+                )}
               </div>
 
               <div className="price-section">

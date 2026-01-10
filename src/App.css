@@ -95,10 +95,26 @@ body {
 }
 
 .ad-footer {
-  margin-top: 40px;
-  padding-top: 20px;
-  border-top: 1px solid var(--border-color);
+  position: fixed;
+  bottom: 0;
+  left: 0;
   width: 100%;
+  height: auto;
+  min-height: 90px; /* Standard mobile banner height */
+  background: var(--surface-dark);
+  backdrop-filter: blur(15px); /* Increased blur for visibility */
+  border-top: 1px solid var(--border-color);
+  z-index: 9999; /* Ensure it's on top */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px 0;
+  box-shadow: 0 -5px 20px rgba(0,0,0,0.15);
+}
+
+/* Add padding to prevent content from being hidden behind sticky footer */
+.main-layout {
+  padding-bottom: 120px; 
 }
 
 /* Responsive: Show sidebars on larger screens */
