@@ -29,15 +29,28 @@ function Playlist() {
   const getPlayableUrl = (url) => {
     if (!url) return url;
     try {
-      console.log('[Debug] Raw URL:', url);
-      // If it's a short url (youtu.be), convert to standard
+      let videoId = null;
+      
+      // Handle short url (youtu.be)
       if (url.includes('youtu.be')) {
-        const id = url.split('youtu.be/')[1]?.split('?')[0];
-        if (id) {
-            const newUrl = `https://www.youtube.com/watch?v=${id}`;
-            console.log('[Debug] Converted URL:', newUrl);
-            return newUrl;
+        videoId = url.split('youtu.be/')[1]?.split('?')[0];
+      } 
+      // Handle standard url (youtube.com)
+      else if (url.includes('youtube.com/watch')) {
+        try {
+          const urlObj = new URL(url);
+          videoId = urlObj.searchParams.get('v');
+        } catch (e) {
+          // Fallback regex if URL parsing fails
+          const match = url.match(/[?&]v=([^&]+)/);
+          if (match) videoId = match[1];
         }
+      }
+
+      if (videoId) {
+          const newUrl = `https://www.youtube.com/watch?v=${videoId}`;
+          // console.log('[Debug] Converted URL:', newUrl);
+          return newUrl;
       }
       return url;
     } catch (e) {
