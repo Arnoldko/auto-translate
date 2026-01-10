@@ -130,54 +130,56 @@ function Playlist() {
       <div className="main-content">
         {/* Player Section */}
         <div className={`player-container ${currentUrlIndex !== -1 ? 'active' : ''}`}>
-          {currentUrlIndex !== -1 ? (
-            <div className="player-wrapper">
-              {playerError && (
-                <div className="player-error-overlay">
-                  <p>{playerError}</p>
-                </div>
-              )}
-              <ReactPlayer
-                /* key={urls[currentUrlIndex]} Removed to prevent crash loop */
-                className="react-player"
-                ref={playerRef}
-                url={getPlayableUrl(urls[currentUrlIndex])}
-                playing={isPlaying}
-                controls={true}
-                volume={1}
-                muted={false}
-                width="100%"
-                height="100%"
-                onEnded={handleEnded}
-                onPlay={() => {
-                  setIsPlaying(true);
-                  logToDebug('[Event] Player onPlay');
-                }}
-                onPause={() => {
-                  setIsPlaying(false);
-                  logToDebug('[Event] Player onPause');
-                }}
-                onError={handleError}
-                onReady={() => logToDebug('[Event] Player Ready')}
-                onStart={() => logToDebug('[Event] Player Started')}
-                onBuffer={() => logToDebug('[Event] Player Buffering')}
-                // youtube config for playsinline (helps with mobile background/screen off to some extent)
-                config={{
-                  youtube: {
-                    playerVars: { 
-                      playsinline: 1,
-                      showinfo: 0,
-                      rel: 0,
-                      origin: window.location.origin 
-                    }
-                  }
-                }}
-              />
-              <div className="now-playing-info">
-                <h3>Now Playing: Track {currentUrlIndex + 1}</h3>
+          {/* Always render Player but hide it visually if not playing, to ensure initialization */}
+          <div className="player-wrapper" style={{ display: currentUrlIndex !== -1 ? 'block' : 'none' }}>
+            {playerError && (
+              <div className="player-error-overlay">
+                <p>{playerError}</p>
               </div>
-            </div>
-          ) : (
+            )}
+            <ReactPlayer
+              className="react-player"
+              ref={playerRef}
+              url={currentUrlIndex !== -1 ? getPlayableUrl(urls[currentUrlIndex]) : null}
+              playing={isPlaying}
+              controls={true}
+              volume={1}
+              muted={false}
+              width="100%"
+              height="100%"
+              onEnded={handleEnded}
+              onPlay={() => {
+                setIsPlaying(true);
+                logToDebug('[Event] Player onPlay');
+              }}
+              onPause={() => {
+                setIsPlaying(false);
+                logToDebug('[Event] Player onPause');
+              }}
+              onError={handleError}
+              onReady={() => logToDebug('[Event] Player Ready')}
+              onStart={() => logToDebug('[Event] Player Started')}
+              onBuffer={() => logToDebug('[Event] Player Buffering')}
+              config={{
+                youtube: {
+                  playerVars: { 
+                    playsinline: 1,
+                    showinfo: 0,
+                    rel: 0,
+                    origin: window.location.origin,
+                    autoplay: 1
+                  }
+                }
+              }}
+            />
+            {currentUrlIndex !== -1 && (
+                <div className="now-playing-info">
+                    <h3>Now Playing: Track {currentUrlIndex + 1}</h3>
+                </div>
+            )}
+          </div>
+          
+          {currentUrlIndex === -1 && (
             <div className="player-placeholder">
               <div className="placeholder-content">
                 <span className="icon">🎵</span>
