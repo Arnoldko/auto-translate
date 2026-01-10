@@ -60,7 +60,7 @@ function App() {
           <footer className="ad-footer">
             <AdSenseBanner 
               slotId="1234567890" 
-              style={{ minHeight: '90px', width: '100%' }} 
+              style={{ minHeight: '50px', width: '100%' }} 
               format="horizontal"
             />
           </footer>

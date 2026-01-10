@@ -100,7 +100,7 @@ body {
   left: 0;
   width: 100%;
   height: auto;
-  min-height: 90px; /* Standard mobile banner height */
+  min-height: 60px; /* Reduced for mobile */
   background: var(--surface-dark);
   backdrop-filter: blur(15px); /* Increased blur for visibility */
   border-top: 1px solid var(--border-color);
@@ -114,13 +114,22 @@ body {
 
 /* Add padding to prevent content from being hidden behind sticky footer */
 .main-layout {
-  padding-bottom: 120px; 
+  padding-bottom: 80px; 
 }
 
 /* Responsive: Show sidebars on larger screens */
 @media (min-width: 1200px) {
   .ad-sidebar {
     display: block;
+  }
+  
+  /* Restore larger footer for desktop leaderboards */
+  .ad-footer {
+    min-height: 100px;
+  }
+  
+  .main-layout {
+    padding-bottom: 120px;
   }
 }
 
