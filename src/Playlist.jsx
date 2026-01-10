@@ -20,6 +20,21 @@ function Playlist() {
     setUrls(newUrls);
   };
 
+  // Helper to normalize YouTube URL
+  const getPlayableUrl = (url) => {
+    if (!url) return url;
+    try {
+      // If it's a short url (youtu.be), convert to standard
+      if (url.includes('youtu.be')) {
+        const id = url.split('youtu.be/')[1]?.split('?')[0];
+        if (id) return `https://www.youtube.com/watch?v=${id}`;
+      }
+      return url;
+    } catch (e) {
+      return url;
+    }
+  };
+
   const startPlaylist = () => {
     setPlayerError(null);
     // Find first non-empty URL
@@ -103,7 +118,7 @@ function Playlist() {
                 /* key={urls[currentUrlIndex]} Removed to prevent crash loop */
                 className="react-player"
                 ref={playerRef}
-                url={urls[currentUrlIndex]}
+                url={getPlayableUrl(urls[currentUrlIndex])}
                 playing={isPlaying}
                 controls={true}
                 volume={1}
