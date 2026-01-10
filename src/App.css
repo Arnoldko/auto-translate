@@ -19,6 +19,10 @@
   --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
 }
 
+* {
+  box-sizing: border-box;
+}
+
 [data-theme='dark'] {
   /* Cyberpunk Palette - Pleasant & Digital */
   --bg-dark: #090912; /* Deep void blue */
@@ -430,6 +434,29 @@ body {
   .app-content {
     margin-right: 0;
     margin-bottom: 70px; /* Bottom nav on mobile */
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  .header h1 {
+    font-size: 20px; /* Smaller font on mobile */
+    order: 2; /* Adjust order if needed, or keep standard */
+    width: 100%;
+    margin: 10px 0;
+  }
+  
+  .header {
+    justify-content: center; /* Center items on mobile */
+  }
+
+  .nav-btn {
+    position: absolute;
+    left: 20px;
+    top: 25px;
+  }
+
+  .ui-lang-selector {
+    display: none; /* Hide UI lang selector on mobile to save space, or move it */
   }
 
   .side-nav {

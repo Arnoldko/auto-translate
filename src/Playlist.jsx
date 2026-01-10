@@ -130,8 +130,16 @@ function Playlist() {
       <div className="main-content">
         {/* Player Section */}
         <div className={`player-container ${currentUrlIndex !== -1 ? 'active' : ''}`}>
-          {/* Always render Player but hide it visually if not playing, to ensure initialization */}
-          <div className="player-wrapper" style={{ display: currentUrlIndex !== -1 ? 'block' : 'none' }}>
+          {/* Keep player mounted but hidden when inactive to improve autoplay reliability */}
+          <div className="player-wrapper" style={{ 
+            display: 'block',
+            visibility: currentUrlIndex !== -1 ? 'visible' : 'hidden',
+            position: currentUrlIndex !== -1 ? 'relative' : 'absolute',
+            zIndex: currentUrlIndex !== -1 ? 1 : -1,
+            opacity: currentUrlIndex !== -1 ? 1 : 0,
+            height: currentUrlIndex !== -1 ? 'auto' : 0,
+            paddingTop: currentUrlIndex !== -1 ? '56.25%' : 0
+          }}>
             {playerError && (
               <div className="player-error-overlay">
                 <p>{playerError}</p>
@@ -140,7 +148,7 @@ function Playlist() {
             <ReactPlayer
               className="react-player"
               ref={playerRef}
-              url={currentUrlIndex !== -1 ? getPlayableUrl(urls[currentUrlIndex]) : null}
+              url={currentUrlIndex !== -1 ? getPlayableUrl(urls[currentUrlIndex]) : getPlayableUrl(urls.find(u => u.trim() !== ''))}
               playing={isPlaying}
               controls={true}
               volume={1}
