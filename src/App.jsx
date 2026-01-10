@@ -3,9 +3,15 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './Home';
 import Playlist from './Playlist';
 import Translator from './Translator';
-import Exchange from './Exchange';
 import Flights from './Flights';
 import Music from './Music';
+import QRCodeGenerator from './tools/QRCodeGenerator';
+import UnitConverter from './tools/UnitConverter';
+import TextTools from './tools/TextTools';
+import CryptoTracker from './tools/CryptoTracker';
+import ImageSearch from './tools/ImageSearch';
+import JsonFormatter from './tools/JsonFormatter';
+import CurrencyConverter from './tools/CurrencyConverter';
 import Navigation from './Navigation';
 import AdSenseBanner from './AdSenseBanner';
 import './App.css';
@@ -39,9 +45,15 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/playlist" element={<Playlist />} />
             <Route path="/translator" element={<Translator />} />
-            <Route path="/exchange" element={<Exchange />} />
             <Route path="/flights" element={<Flights />} />
             <Route path="/music" element={<Music />} />
+            <Route path="/tools/qr" element={<QRCodeGenerator />} />
+            <Route path="/tools/unit" element={<UnitConverter />} />
+            <Route path="/tools/text" element={<TextTools />} />
+            <Route path="/tools/crypto" element={<CryptoTracker />} />
+            <Route path="/tools/image" element={<ImageSearch />} />
+            <Route path="/tools/json" element={<JsonFormatter />} />
+            <Route path="/tools/currency" element={<CurrencyConverter />} />
           </Routes>
           
           {/* Bottom Ad (Footer) */}

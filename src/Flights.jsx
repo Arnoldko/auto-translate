@@ -154,7 +154,7 @@ const LocationSelector = ({ label, value, onChange }) => {
             </div>
           </div>
         ) : (
-          <span>Select Location</span>
+          <span>지역 선택</span>
         )}
         <span className="arrow">▼</span>
       </div>
@@ -164,7 +164,7 @@ const LocationSelector = ({ label, value, onChange }) => {
           {step === 'country' ? (
             <>
               <div style={{padding: '10px', fontSize: '0.9rem', fontWeight: 'bold', color: 'var(--text-secondary)', borderBottom: '1px solid rgba(255,255,255,0.1)'}}>
-                Select Country
+                국가 선택
               </div>
               {COUNTRIES.map(country => (
                 <div 
@@ -201,7 +201,7 @@ const LocationSelector = ({ label, value, onChange }) => {
                 <span style={{marginRight: '10px'}}>←</span>
                 <img 
                   src={`https://flagcdn.com/w20/${COUNTRIES.find(c => c.code === selectedCountryCode)?.flag}.png`} 
-                  alt="flag" 
+                  alt="국기" 
                   style={{width: '20px', marginRight: '8px', borderRadius: '2px'}}
                 />
                 {COUNTRIES.find(c => c.code === selectedCountryCode)?.name}
@@ -307,11 +307,11 @@ const Flights = () => {
 
   return (
     <div className="flights-container">
-      <Link to="/" className="back-link">← Back to Home</Link>
+      <Link to="/" className="back-link">← 홈으로 돌아가기</Link>
       
       <div className="flights-header">
-        <h1 className="flights-title">Global Flight Search</h1>
-        <p>Find the best deals for your journey</p>
+        <h1 className="flights-title">전 세계 항공권 검색</h1>
+        <p>최저가 항공권을 찾아보세요</p>
       </div>
 
       <div className="search-panel">
@@ -325,7 +325,7 @@ const Flights = () => {
               checked={tripType === 'one-way'}
               onChange={() => setTripType('one-way')}
             />
-            One-way
+            편도
           </label>
           <label className={`trip-type-option ${tripType === 'round-trip' ? 'active' : ''}`}>
             <input 
@@ -335,13 +335,13 @@ const Flights = () => {
               checked={tripType === 'round-trip'}
               onChange={() => setTripType('round-trip')}
             />
-            Round-trip
+            왕복
           </label>
         </div>
 
         <div className="route-selection">
           <LocationSelector 
-            label="From" 
+            label="출발" 
             value={origin} 
             onChange={setOrigin} 
           />
@@ -351,7 +351,7 @@ const Flights = () => {
           </button>
           
           <LocationSelector 
-            label="To" 
+            label="도착" 
             value={destination} 
             onChange={setDestination} 
           />
@@ -359,7 +359,7 @@ const Flights = () => {
 
         <div className="flight-options">
           <div className="date-picker">
-            <label style={{display: 'block', marginBottom: '5px', fontSize: '0.9rem', color: 'var(--text-secondary)'}}>Departure</label>
+            <label style={{display: 'block', marginBottom: '5px', fontSize: '0.9rem', color: 'var(--text-secondary)'}}>가는 날</label>
             <input 
               type="date" 
               className="date-input" 
@@ -370,7 +370,7 @@ const Flights = () => {
 
           {tripType === 'round-trip' && (
             <div className="date-picker">
-              <label style={{display: 'block', marginBottom: '5px', fontSize: '0.9rem', color: 'var(--text-secondary)'}}>Return</label>
+              <label style={{display: 'block', marginBottom: '5px', fontSize: '0.9rem', color: 'var(--text-secondary)'}}>오는 날</label>
               <input 
                 type="date" 
                 className="date-input" 
@@ -387,26 +387,26 @@ const Flights = () => {
               checked={isDirect} 
               onChange={() => setIsDirect(!isDirect)}
             />
-            <span>Direct Flights Only</span>
+            <span>직항만 보기</span>
           </div>
 
           <div style={{flex: 1}}>
-            <label style={{display: 'block', marginBottom: '5px', fontSize: '0.9rem', color: 'var(--text-secondary)'}}>Sort By</label>
+            <label style={{display: 'block', marginBottom: '5px', fontSize: '0.9rem', color: 'var(--text-secondary)'}}>정렬</label>
             <select 
               className="sort-select" 
               value={sortOption} 
               onChange={(e) => setSortOption(e.target.value)}
               style={{width: '100%'}}
             >
-              <option value="price_asc">Lowest Price</option>
-              <option value="time_asc">Earliest Departure</option>
-              <option value="time_desc">Latest Departure</option>
+              <option value="price_asc">최저가순</option>
+              <option value="time_asc">출발 시간 빠른순</option>
+              <option value="time_desc">출발 시간 늦은순</option>
             </select>
           </div>
         </div>
 
         <button className="search-btn" onClick={generateMockFlights}>
-          {isSearching ? 'Searching...' : 'Search Flights'}
+          {isSearching ? '검색 중...' : '항공권 검색'}
         </button>
       </div>
 
@@ -414,7 +414,7 @@ const Flights = () => {
         {isSearching ? (
           <div style={{textAlign: 'center', padding: '40px'}}>
             <div className="spinner">✈️</div>
-            <p>Scanning airlines...</p>
+            <p>항공사를 스캔 중입니다...</p>
           </div>
         ) : results.length > 0 ? (
           results.map(flight => (
@@ -423,7 +423,7 @@ const Flights = () => {
                 <div className="airline-logo">{flight.airline.logo}</div>
                 <div>
                   <div style={{fontWeight: 'bold'}}>{flight.airline.name}</div>
-                  <div style={{fontSize: '0.8rem', color: 'var(--text-secondary)'}}>Economy</div>
+                  <div style={{fontSize: '0.8rem', color: 'var(--text-secondary)'}}>이코노미</div>
                 </div>
               </div>
 
@@ -434,9 +434,9 @@ const Flights = () => {
                     <span className="duration-text">{flight.duration}</span>
                     <div className="line"></div>
                     {flight.isDirect ? (
-                      <span className="direct-badge">Direct</span>
+                      <span className="direct-badge">직항</span>
                     ) : (
-                      <span className="stop-badge">1 Stop</span>
+                      <span className="stop-badge">1회 경유</span>
                     )}
                   </div>
                   <span>{flight.arrivalTime}</span>
@@ -447,20 +447,20 @@ const Flights = () => {
                 </div>
                 {flight.tripType === 'round-trip' && (
                   <div style={{textAlign: 'center', fontSize: '0.8rem', color: 'var(--accent-color)', marginTop: '5px'}}>
-                    Round Trip
+                    왕복
                   </div>
                 )}
               </div>
 
               <div className="price-section">
                 <span className="price">${flight.price}</span>
-                <button className="book-btn">Select</button>
+                <button className="book-btn">선택</button>
               </div>
             </div>
           ))
         ) : (
           <div style={{textAlign: 'center', padding: '40px', background: 'rgba(255,255,255,0.05)', borderRadius: '15px'}}>
-            <p>No flights found for this criteria.</p>
+            <p>조건에 맞는 항공권이 없습니다.</p>
           </div>
         )}
       </div>

@@ -97,6 +97,8 @@ const UI_TEXTS = {
     error: '번역 오류',
     translating: '번역 중...',
     poweredBy: '번역 제공: MyMemory API',
+    copy: '복사',
+    copied: '복사됨',
   },
   en: {
     title: 'Triple Auto Translator',
@@ -106,6 +108,8 @@ const UI_TEXTS = {
     error: 'Translation Error',
     translating: 'Translating...',
     poweredBy: 'Powered by MyMemory API',
+    copy: 'Copy',
+    copied: 'Copied',
   },
   ja: {
     title: '3重自動翻訳機',
@@ -115,6 +119,8 @@ const UI_TEXTS = {
     error: '翻訳エラー',
     translating: '翻訳中...',
     poweredBy: 'Powered by MyMemory API',
+    copy: 'コピー',
+    copied: 'コピー完了',
   },
   // Fallback for others to English
 };
@@ -272,7 +278,7 @@ function Translator() {
   return (
     <div className="app-container">
       <header className="header">
-        <Link to="/" className="nav-btn home-btn" title="Home">
+        <Link to="/" className="nav-btn home-btn" title="홈으로">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
             <polyline points="9 22 9 12 15 12 15 22"></polyline>
@@ -314,7 +320,7 @@ function Translator() {
               <button 
                 className="action-btn tts-btn"
                 onClick={() => handleSpeak(slot.text, slot.lang)}
-                title="Listen (TTS)"
+                title="듣기 (TTS)"
               >
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
@@ -325,7 +331,7 @@ function Translator() {
               <button 
                 className={`action-btn copy-btn ${copiedId === slot.id ? 'copied' : ''}`}
                 onClick={() => handleCopy(slot.text, slot.id)}
-                title="Copy to clipboard"
+                title="클립보드에 복사"
                 aria-label="Copy"
               >
                 {copiedId === slot.id ? (
@@ -333,7 +339,7 @@ function Translator() {
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <polyline points="20 6 9 17 4 12"></polyline>
                     </svg>
-                    <span className="btn-text">Copied</span>
+                    <span className="btn-text">{t('copied')}</span>
                   </>
                 ) : (
                   <>
@@ -341,7 +347,7 @@ function Translator() {
                       <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
                       <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
                     </svg>
-                    <span className="btn-text">Copy</span>
+                    <span className="btn-text">{t('copy')}</span>
                   </>
                 )}
               </button>

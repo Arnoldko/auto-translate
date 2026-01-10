@@ -1,86 +1,120 @@
-import React, { useState } from 'react';
+import { useState, useRef } from 'react';
 import ReactPlayer from 'react-player';
-import { Link } from 'react-router-dom';
 import './App.css';
 
-const Music = () => {
-  const [currentUrl, setCurrentUrl] = useState('https://www.youtube.com/watch?v=jfKfPfyJRdk'); // Lofi Girl Live
-  
-  const channels = [
-    { name: 'Lofi Girl', url: 'https://www.youtube.com/watch?v=jfKfPfyJRdk' },
-    { name: 'Chillhop', url: 'https://www.youtube.com/watch?v=5yx6BWlEVcY' },
-    { name: 'Coffee Shop', url: 'https://www.youtube.com/watch?v=lP26UCnoHg0' },
-    { name: 'Jazz', url: 'https://www.youtube.com/watch?v=Dx5qFachd3A' }
-  ];
+function Music() {
+  const [playlist, setPlaylist] = useState([
+    'https://www.youtube.com/watch?v=jfKfPfyJRdk',
+    'https://www.youtube.com/watch?v=5yx6BWlEVcY',
+  ]);
+  const [currentUrl, setCurrentUrl] = useState('');
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [playing, setPlaying] = useState(false);
+  const [isLooping, setIsLooping] = useState(false);
+
+  const playerRef = useRef(null);
+
+  const handleEnded = () => {
+    const nextIndex = (currentIndex + 1) % playlist.length;
+    if (!isLooping && nextIndex === 0) {
+      setPlaying(false);
+      return;
+    }
+    setCurrentIndex(nextIndex);
+    setPlaying(true);
+  };
+
+  const addUrl = () => {
+    if (currentUrl.trim() !== '') {
+      setPlaylist([...playlist, currentUrl]);
+      setCurrentUrl('');
+    }
+  };
+
+  const handleRemove = (e, index) => {
+    e.stopPropagation();
+    const newPlaylist = playlist.filter((_, i) => i !== index);
+    setPlaylist(newPlaylist);
+    if (currentIndex >= index && currentIndex > 0) {
+      setCurrentIndex(currentIndex - 1);
+    }
+  };
 
   return (
-    <div className="music-container" style={{ padding: '20px', maxWidth: '1000px', margin: '0 auto' }}>
-      <Link to="/" className="back-link">← Back to Home</Link>
-      
-      <div className="music-header" style={{ textAlign: 'center', marginBottom: '30px' }}>
-        <h1 style={{ 
-          fontSize: '2.5rem', 
-          background: 'linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%)',
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
-          marginBottom: '10px'
-        }}>
-          Music Channel
-        </h1>
-        <p style={{ color: 'var(--text-secondary)' }}>Focus, Relax, Sleep</p>
-      </div>
+    <div className="playlist-app">
+      <header className="playlist-header">
+        <h1>음악 플레이리스트</h1>
+        <div className="playlist-input-container">
+          <input
+            type="text"
+            className="playlist-title-input"
+            value={currentUrl}
+            onChange={(e) => setCurrentUrl(e.target.value)}
+            placeholder="유튜브 URL을 여기에 붙여넣으세요..."
+            onKeyPress={(e) => e.key === 'Enter' && addUrl()}
+          />
+          <button className="add-btn" onClick={addUrl}>추가</button>
+        </div>
+      </header>
 
-      <div className="player-wrapper" style={{ 
-        position: 'relative', 
-        paddingTop: '56.25%', 
-        borderRadius: '20px', 
-        overflow: 'hidden',
-        boxShadow: '0 20px 50px rgba(0,0,0,0.3)',
-        border: '1px solid var(--border-color)',
-        background: '#000'
-      }}>
-        <ReactPlayer
-          url={currentUrl}
-          className="react-player"
-          width="100%"
-          height="100%"
-          style={{ position: 'absolute', top: 0, left: 0 }}
-          playing={true}
-          controls={true}
-        />
-      </div>
+      <div className="main-content">
+        <div className="player-card">
+          <div className="player-wrapper">
+            {playlist.length > 0 && (
+              <ReactPlayer
+                ref={playerRef}
+                url={playlist[currentIndex]}
+                playing={playing}
+                controls
+                width="100%"
+                height="360px"
+                onEnded={handleEnded}
+                onPlay={() => setPlaying(true)}
+                onPause={() => setPlaying(false)}
+              />
+            )}
+            {playlist.length === 0 && (
+              <div className="empty-player">
+                <p>노래를 추가하여 재생을 시작하세요</p>
+              </div>
+            )}
+          </div>
 
-      <div className="channel-selector" style={{ 
-        marginTop: '30px', 
-        display: 'flex', 
-        gap: '15px', 
-        justifyContent: 'center',
-        flexWrap: 'wrap'
-      }}>
-        {channels.map((channel) => (
-          <button
-            key={channel.name}
-            onClick={() => setCurrentUrl(channel.url)}
-            style={{
-              padding: '12px 25px',
-              borderRadius: '30px',
-              border: 'none',
-              background: currentUrl === channel.url ? 'var(--primary)' : 'var(--surface-dark)',
-              color: currentUrl === channel.url ? '#fff' : 'var(--text-primary)',
-              cursor: 'pointer',
-              fontSize: '1rem',
-              fontWeight: 'bold',
-              transition: 'all 0.3s ease',
-              boxShadow: currentUrl === channel.url ? '0 5px 15px var(--primary-glow)' : 'none',
-              border: '1px solid var(--border-color)'
-            }}
-          >
-            {channel.name}
-          </button>
-        ))}
+          <div className="player-controls-bar">
+            <button className="control-btn" onClick={() => setPlaying(!playing)}>
+              {playing ? '⏸ 일시정지' : '▶ 재생'}
+            </button>
+            <button
+              className={`control-btn ${isLooping ? 'active' : ''}`}
+              onClick={() => setIsLooping(!isLooping)}
+            >
+              🔁 반복 {isLooping ? '켜짐' : '꺼짐'}
+            </button>
+          </div>
+        </div>
+
+        <div className="playlist-list">
+          {playlist.map((url, idx) => (
+            <div
+              key={idx}
+              className={`playlist-item ${idx === currentIndex ? 'active' : ''}`}
+              onClick={() => {
+                setCurrentIndex(idx);
+                setPlaying(true);
+              }}
+            >
+              <span className="item-number">{idx + 1}</span>
+              <div className="item-info">
+                <span className="item-url">{url}</span>
+                {idx === currentIndex && <span className="playing-badge">재생 중</span>}
+              </div>
+              <button className="remove-btn" onClick={(e) => handleRemove(e, idx)}>×</button>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
-};
+}
 
 export default Music;

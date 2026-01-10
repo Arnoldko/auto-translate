@@ -1397,6 +1397,14 @@ body {
   box-shadow: 0 15px 30px rgba(0, 114, 255, 0.5);
 }
 
+.exchange-icon {
+  background: linear-gradient(135deg, #134E5E 0%, #71B280 100%);
+  box-shadow: 0 10px 20px rgba(19, 78, 94, 0.3);
+}
+.exchange-icon:hover {
+  box-shadow: 0 15px 30px rgba(19, 78, 94, 0.5);
+}
+
 /* Additional Mobile Optimizations for Menus */
 @media (max-width: 600px) {
   /* Exchange App Mobile */

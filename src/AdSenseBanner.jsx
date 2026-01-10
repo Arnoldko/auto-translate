@@ -12,7 +12,7 @@ const AdSenseBanner = ({ slotId, style = {}, format = 'auto', responsive = 'true
   return (
     <div className="adsense-container" style={{ margin: '0 auto', textAlign: 'center', maxWidth: '100%', width: '100%' }}>
       {/* Visual Placeholder for Development/Empty State */}
-      <div style={{ fontSize: '10px', color: '#888', marginBottom: '2px', textTransform: 'uppercase', letterSpacing: '1px' }}>Advertisement</div>
+      <div style={{ fontSize: '10px', color: '#888', marginBottom: '2px', textTransform: 'uppercase', letterSpacing: '1px' }}>광고</div>
       <ins
         className="adsbygoogle"
         style={{ 
