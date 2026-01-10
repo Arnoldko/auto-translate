@@ -1,6 +1,8 @@
 import { useState, useRef } from 'react';
 import ReactPlayer from 'react-player';
+import { Link } from 'react-router-dom';
 import './App.css';
+import './tools/Tools.css';
 
 function Playlist() {
   const [playlist, setPlaylist] = useState([
@@ -43,7 +45,8 @@ function Playlist() {
   return (
     <div className="playlist-app">
       <header className="playlist-header">
-        <h1>음악 플레이리스트</h1>
+        <Link to="/" className="back-link">← 홈으로 돌아가기</Link>
+        <h1>음악 플레이리스트 <span className="feature-icon-right">🎵</span></h1>
         <div className="playlist-input-container">
           <input
             type="text"

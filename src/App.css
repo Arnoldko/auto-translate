@@ -99,22 +99,23 @@ body {
   bottom: 0;
   left: 0;
   width: 100%;
-  height: auto;
-  min-height: 60px; /* Reduced for mobile */
+  height: 60px !important; /* Fixed height for mobile, reduced to minimize intrusion */
+  max-height: 60px !important;
+  overflow: hidden !important;
   background: var(--surface-dark);
-  backdrop-filter: blur(15px); /* Increased blur for visibility */
+  backdrop-filter: blur(15px);
   border-top: 1px solid var(--border-color);
-  z-index: 9999; /* Ensure it's on top */
+  z-index: 9999;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 5px 0;
+  padding: 0;
   box-shadow: 0 -5px 20px rgba(0,0,0,0.15);
 }
 
 /* Add padding to prevent content from being hidden behind sticky footer */
 .main-layout {
-  padding-bottom: 80px; 
+  padding-bottom: 70px; 
 }
 
 /* Responsive: Show sidebars on larger screens */
@@ -123,9 +124,12 @@ body {
     display: block;
   }
   
-  /* Restore larger footer for desktop leaderboards */
+  /* Restore larger footer for desktop */
   .ad-footer {
+    height: auto;
     min-height: 100px;
+    max-height: none;
+    overflow: visible;
   }
   
   .main-layout {

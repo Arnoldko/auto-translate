@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 import { Line } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -137,6 +138,7 @@ const CryptoTracker = () => {
   return (
     <div className="tool-container">
       <div className="tool-header">
+        <Link to="/" className="back-link">← 홈으로 돌아가기</Link>
         <h1>암호화폐 시세 추적기 <span className="feature-icon-right">🪙</span></h1>
         <p>CoinGecko 실시간 시세 및 트렌드</p>
       </div>

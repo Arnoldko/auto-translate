@@ -1,6 +1,7 @@
-import { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './App.css';
+import './tools/Tools.css';
 
 // Map language codes to country codes for flags
 const LANG_TO_COUNTRY = {
@@ -284,7 +285,7 @@ function Translator() {
             <polyline points="9 22 9 12 15 12 15 22"></polyline>
           </svg>
         </Link>
-        <h1>{t('title')}</h1>
+        <h1>{t('title')} <span className="feature-icon-right">🌐</span></h1>
         <div className="ui-lang-selector">
           <label>{t('uiLangLabel')}: </label>
           <LanguageSelector 
