@@ -13,11 +13,11 @@ const Home = () => {
       </div>
       
       <div className="menu-grid">
-        <Link to="/playlist" className="menu-item">
+        <Link to="/music" className="menu-item">
           <div className="icon-square music-icon">
             <div className="icon-bg">🎵</div>
-            <span className="icon-text">무료 음악</span>
-            <span className="icon-subtext">Free Music</span>
+            <span className="icon-text">음악 채널</span>
+            <span className="icon-subtext">YouTube Music</span>
           </div>
         </Link>
         <Link to="/translator" className="menu-item">
@@ -32,6 +32,13 @@ const Home = () => {
             <div className="icon-bg">💱</div>
             <span className="icon-text">환율 계산</span>
             <span className="icon-subtext">Exchange</span>
+          </div>
+        </Link>
+        <Link to="/flights" className="menu-item">
+          <div className="icon-square flight-icon">
+            <div className="icon-bg">✈️</div>
+            <span className="icon-text">최저가 항공</span>
+            <span className="icon-subtext">Cheap Flights</span>
           </div>
         </Link>
       </div>

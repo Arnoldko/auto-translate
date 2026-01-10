@@ -49,13 +49,66 @@ body {
   background: var(--bg-gradient);
   color: var(--text-primary);
   font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-  height: 100vh;
-  overflow: auto; /* Allow body to scroll if needed, though app-content usually handles it */
+  /* height: 100vh; */ /* Remove fixed height to allow scrolling */
+  min-height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 #root {
-  height: 100%;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
 }
+
+/* --- Layout Structure --- */
+.main-layout {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  max-width: 1600px; /* Limit max width for large screens */
+  margin: 0 auto;
+  padding-top: 80px; /* Space for Navigation */
+  padding-bottom: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.content-area {
+  flex: 1;
+  max-width: 800px; /* Main content width */
+  min-width: 320px;
+  margin: 0 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.ad-sidebar {
+  width: 180px; /* Fixed width for skyscraper ads */
+  flex-shrink: 0;
+  display: none; /* Hidden by default on small screens */
+}
+
+.ad-sticky {
+  position: sticky;
+  top: 100px; /* Stick below navbar */
+}
+
+.ad-footer {
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border-color);
+  width: 100%;
+}
+
+/* Responsive: Show sidebars on larger screens */
+@media (min-width: 1200px) {
+  .ad-sidebar {
+    display: block;
+  }
+}
+
+/* --- End Layout Structure --- */
 
 /* Background Animation - Only visible in Dark Mode */
 .cyber-bg-container {
@@ -1190,4 +1243,17 @@ body {
   .translator-slot {
     min-height: 200px;
   }
+}
+.flight-icon {
+  background: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%);
+  box-shadow: 0 10px 20px rgba(0, 114, 255, 0.3);
+}
+
+.flight-icon .icon-bg {
+  color: rgba(255, 255, 255, 0.2);
+  transform: rotate(-45deg) scale(1.2);
+}
+
+.flight-icon:hover {
+  box-shadow: 0 15px 30px rgba(0, 114, 255, 0.5);
 }

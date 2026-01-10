@@ -286,10 +286,12 @@ function Translator() {
               </div>
             </div>
             <textarea
+              id={`textarea-${index}`}
               value={slot.text}
               onChange={(e) => handleTextChange(index, e.target.value)}
               placeholder={t('placeholder')}
               dir="auto"
+              style={{ minHeight: '150px', overflowY: 'hidden', resize: 'none' }}
             />
             <div className="slot-footer">
               <button 
