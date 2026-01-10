@@ -53,9 +53,15 @@ function Playlist() {
 
   const handlePlaySpecific = (index) => {
     if (urls[index].trim() !== '') {
+      setPlayerError(null);
       setCurrentUrlIndex(index);
       setIsPlaying(true);
     }
+  };
+
+  const handleError = (e) => {
+    console.error("Player Error:", e);
+    setPlayerError("동영상을 재생할 수 없습니다.");
   };
 
   // Helper to extract video ID for thumbnail (optional enhancement)
