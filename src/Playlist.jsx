@@ -4,7 +4,14 @@ import './App.css';
 
 function Playlist() {
   const [playlistName, setPlaylistName] = useState('My Playlist');
-  const [urls, setUrls] = useState(['', '', '', '', '']);
+  // Pre-fill the first slot with the user's requested URL for demonstration
+  const [urls, setUrls] = useState([
+    'https://youtu.be/UW6fyT7oVrA?list=RDUW6fyT7oVrA', 
+    '', 
+    '', 
+    '', 
+    ''
+  ]);
   const [currentUrlIndex, setCurrentUrlIndex] = useState(-1);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLooping, setIsLooping] = useState(false);
@@ -187,7 +194,7 @@ function Playlist() {
                     playsinline: 1,
                     showinfo: 0,
                     rel: 0,
-                    origin: window.location.origin,
+                    // origin: window.location.origin, // Removed origin as it can cause CORS issues with some videos
                     autoplay: 1
                   }
                 }
