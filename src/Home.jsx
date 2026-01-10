@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import AdSenseBanner from './AdSenseBanner';
 import './App.css'; // We can reuse App.css or create Home.css
 
 const Home = () => {
@@ -34,6 +35,9 @@ const Home = () => {
           </div>
         </Link>
       </div>
+      
+      {/* AdSense Banner Example */}
+      <AdSenseBanner slotId="1234567890" />
     </div>
   );
 };

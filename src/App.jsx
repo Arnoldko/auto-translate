@@ -5,6 +5,7 @@ import Playlist from './Playlist';
 import Translator from './Translator';
 import Exchange from './Exchange';
 import Navigation from './Navigation';
+import MiniPlayer from './MiniPlayer';
 import './App.css';
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
       </div>
       
       <Navigation />
+      <MiniPlayer />
       
       <div className="app-content">
         <Routes>
