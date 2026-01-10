@@ -14,6 +14,55 @@ const CURRENCY_TO_COUNTRY = {
   // Add more as needed based on API response
 };
 
+const CURRENCY_NAMES_KO = {
+  USD: '미국 달러',
+  KRW: '대한민국 원',
+  JPY: '일본 엔',
+  EUR: '유로 (유럽연합)',
+  CNY: '중국 위안',
+  GBP: '영국 파운드',
+  CAD: '캐나다 달러',
+  AUD: '호주 달러',
+  NZD: '뉴질랜드 달러',
+  CHF: '스위스 프랑',
+  HKD: '홍콩 달러',
+  SGD: '싱가포르 달러',
+  INR: '인도 루피',
+  PHP: '필리핀 페소',
+  VND: '베트남 동',
+  THB: '태국 바트',
+  TWD: '대만 달러',
+  MYR: '말레이시아 링깃',
+  IDR: '인도네시아 루피아',
+  RUB: '러시아 루블',
+  BRL: '브라질 레알',
+  MXN: '멕시코 페소',
+  ZAR: '남아공 랜드',
+  TRY: '튀르키예 리라',
+  SEK: '스웨덴 크로나',
+  PLN: '폴란드 즐로티',
+  DKK: '덴마크 크로네',
+  NOK: '노르웨이 크로네',
+  HUF: '헝가리 포린트',
+  CZK: '체코 코루나',
+  ILS: '이스라엘 셰켈',
+  CLP: '칠레 페소',
+  AED: 'UAE 디르함',
+  COP: '콜롬비아 페소',
+  SAR: '사우디 리얄',
+  RON: '루마니아 레우',
+  PEN: '페루 솔',
+  KWD: '쿠웨이트 디나르',
+  BHD: '바레인 디나르',
+  OMR: '오만 리알',
+  JOD: '요르단 디나르',
+  EGP: '이집트 파운드',
+  PKR: '파키스탄 루피',
+  LKR: '스리랑카 루피',
+  BDT: '방글라데시 타카',
+  QAR: '카타르 리얄',
+};
+
 function Exchange() {
   const [rates, setRates] = useState({});
   const [currencyList, setCurrencyList] = useState([]);
@@ -179,9 +228,11 @@ function Exchange() {
         {/* Add New Currency */}
         <div className="add-currency-section">
           <select onChange={handleAddCurrency} className="add-currency-select" defaultValue="">
-            <option value="" disabled>+ Add Currency to Compare</option>
+            <option value="" disabled>+ 국가/화폐 추가 (Add Currency)</option>
             {currencyList.filter(c => !activeCurrencies.includes(c)).map(c => (
-              <option key={c} value={c}>{c}</option>
+              <option key={c} value={c}>
+                {c} {CURRENCY_NAMES_KO[c] ? `- ${CURRENCY_NAMES_KO[c]}` : ''}
+              </option>
             ))}
           </select>
         </div>

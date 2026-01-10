@@ -670,27 +670,34 @@ body {
 .rate-details {
   display: flex;
   justify-content: space-between;
-  background: rgba(0,0,0,0.05);
-  border-radius: 8px;
-  padding: 10px;
-  font-size: 12px;
+  background: var(--surface-dark); /* Darker background for contrast against the light row */
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 15px;
+  margin-top: 12px;
+  gap: 15px;
 }
 
 .rate-item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: 8px;
+  flex: 1;
 }
 
 .rate-label {
   color: var(--text-secondary);
-  font-size: 11px;
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
 }
 
 .rate-value {
-  font-weight: 600;
+  font-weight: 800;
   color: var(--text-primary);
+  font-size: 18px;
+  letter-spacing: 0.5px;
 }
 
 .highlight-send {
