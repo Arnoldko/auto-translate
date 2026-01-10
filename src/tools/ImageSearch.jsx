@@ -30,7 +30,7 @@ const ImageSearch = () => {
     <div className="tool-page">
       <div className="tool-header">
         <Link to="/" className="back-link">← 홈으로 돌아가기</Link>
-        <h1>이미지 검색기</h1>
+        <h1>이미지 검색기 <span className="feature-icon-right">🔍</span></h1>
         <p>사진을 찍거나 업로드하여 구글에서 검색하세요</p>
       </div>
 

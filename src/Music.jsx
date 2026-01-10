@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import ReactPlayer from 'react-player';
 import './App.css';
+import './tools/Tools.css';
 
 function Music() {
   const [playlist, setPlaylist] = useState([
@@ -43,7 +44,7 @@ function Music() {
   return (
     <div className="playlist-app">
       <header className="playlist-header">
-        <h1>음악 플레이리스트</h1>
+        <h1>음악 플레이리스트 <span className="feature-icon-right">🎵</span></h1>
         <div className="playlist-input-container">
           <input
             type="text"

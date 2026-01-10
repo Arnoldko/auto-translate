@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Flights.css';
+import './tools/Tools.css';
 
 // Mock Country & City Data
 const COUNTRIES = [
@@ -310,7 +311,7 @@ const Flights = () => {
       <Link to="/" className="back-link">← 홈으로 돌아가기</Link>
       
       <div className="flights-header">
-        <h1 className="flights-title">전 세계 항공권 검색</h1>
+        <h1 className="flights-title">전 세계 항공권 검색 <span className="feature-icon-right">✈️</span></h1>
         <p>최저가 항공권을 찾아보세요</p>
       </div>
 

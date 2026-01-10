@@ -152,7 +152,7 @@ const CurrencyConverter = () => {
     <div className="tool-page">
       <div className="tool-header">
         <Link to="/" className="back-link">← 홈으로 돌아가기</Link>
-        <h1>환율 계산기</h1>
+        <h1>환율 계산기 <span className="feature-icon-right">💱</span></h1>
         <p>실시간 환율 및 과거 데이터 차트</p>
       </div>
 

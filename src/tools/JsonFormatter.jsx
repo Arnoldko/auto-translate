@@ -53,7 +53,7 @@ const JsonFormatter = () => {
   return (
     <div className="tool-container">
       <div className="tool-header">
-        <h1>JSON 포맷터 & 검사기</h1>
+        <h1>JSON 포맷터 & 검사기 <span className="feature-icon-right">📋</span></h1>
         <p>JSON 데이터 정리, 축소 및 유효성 검사</p>
       </div>
 
