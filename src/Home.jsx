@@ -1,15 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import AdSenseBanner from './AdSenseBanner';
 import './App.css'; // We can reuse App.css or create Home.css
 
 const Home = () => {
+  const [imgError, setImgError] = useState(false);
+
   return (
     <div className="home-container">
       <div className="home-header">
-        <div className="toolbox-icon">🧰</div>
-        <h1 className="business-title">Arnold Rich<br/>Business Tool</h1>
-        <div className="business-subtitle">Global Smart Assistant</div>
+        {!imgError ? (
+          <img 
+            src="/logo.png" 
+            alt="Business Logo" 
+            className="main-logo" 
+            onError={() => setImgError(true)} 
+          />
+        ) : (
+          <div className="toolbox-icon">🧰</div>
+        )}
+        <h1 className="business-title">Universal Smart Business Intelligence & Automated Assistant Platform</h1>
+        <div className="business-subtitle">Global Strategic Partner</div>
       </div>
       
       <div className="menu-grid">

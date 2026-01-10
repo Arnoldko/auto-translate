@@ -26,7 +26,7 @@
 [data-theme='dark'] {
   /* Cyberpunk Palette - Pleasant & Digital */
   --bg-dark: #090912; /* Deep void blue */
-  --surface-dark: rgba(20, 25, 40, 0.6); /* Glassmorphic panel */
+  --surface-dark: rgba(20, 15, 40, 0.6); /* Glassmorphic panel */
   --surface-light: rgba(255, 255, 255, 0.05);
   
   --primary: #00f3ff; /* Cyber Cyan */
@@ -300,6 +300,14 @@ body {
   font-size: 80px;
   margin-bottom: 10px;
   filter: drop-shadow(0 0 20px var(--primary-glow));
+}
+
+.main-logo {
+  max-width: 200px;
+  height: auto;
+  margin-bottom: 20px;
+  filter: drop-shadow(0 0 20px var(--primary-glow));
+  animation: float 6s ease-in-out infinite;
 }
 
 .business-title {
@@ -1272,4 +1280,56 @@ body {
 
 .flight-icon:hover {
   box-shadow: 0 15px 30px rgba(0, 114, 255, 0.5);
+}
+
+/* Additional Mobile Optimizations for Menus */
+@media (max-width: 600px) {
+  /* Exchange App Mobile */
+  .exchange-app {
+    padding: 20px 10px;
+  }
+  
+  .rate-details {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .rate-item {
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    padding-bottom: 5px;
+  }
+  
+  .rate-item:last-child {
+    border-bottom: none;
+  }
+  
+  /* Music App Mobile */
+  .playlist-header {
+    flex-direction: column;
+    gap: 15px;
+    align-items: flex-start;
+    border-radius: 0 0 15px 15px;
+  }
+  
+  .playlist-title-input {
+    width: 100%;
+    font-size: 20px;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+    gap: 15px;
+    align-items: stretch;
+  }
+  
+  .start-btn {
+    width: 100%;
+  }
+  
+  .loop-toggle {
+    justify-content: center;
+  }
 }

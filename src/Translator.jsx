@@ -191,6 +191,13 @@ function Translator() {
     // Debounce translation
     if (debounceTimer.current) clearTimeout(debounceTimer.current);
 
+    // Auto-resize textarea
+    const textarea = document.getElementById(`textarea-${index}`);
+    if (textarea) {
+      textarea.style.height = 'auto';
+      textarea.style.height = `${textarea.scrollHeight}px`;
+    }
+
     debounceTimer.current = setTimeout(() => {
       if (newText.trim() === '') {
         // Clear all if empty
@@ -236,6 +243,16 @@ function Translator() {
           const next = [...prev];
           next[targetIndex].text = data.responseData.translatedText;
           next[targetIndex].isLoading = false;
+          
+          // Resize after translation update
+          setTimeout(() => {
+            const textarea = document.getElementById(`textarea-${targetIndex}`);
+            if (textarea) {
+              textarea.style.height = 'auto';
+              textarea.style.height = `${textarea.scrollHeight}px`;
+            }
+          }, 0);
+
           return next;
         });
       } else {
