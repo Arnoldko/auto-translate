@@ -99,8 +99,14 @@ function Exchange() {
   }, []);
 
   const handleAmountChange = (currency, value) => {
-    setSourceCurrency(currency);
-    setSourceAmount(value);
+    // Remove commas to get raw number string
+    const rawValue = value.replace(/,/g, '');
+    
+    // Validate: Allow digits and a single decimal point
+    if (rawValue === '' || /^\d*\.?\d*$/.test(rawValue)) {
+      setSourceCurrency(currency);
+      setSourceAmount(rawValue);
+    }
   };
 
   const handleAddCurrency = (e) => {
@@ -142,6 +148,14 @@ function Exchange() {
     });
   };
 
+  const formatInputDisplay = (val) => {
+    if (!val) return '';
+    const parts = val.toString().split('.');
+    // Format integer part with commas
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return parts.join('.');
+  };
+
   return (
     <div className="exchange-app">
       <div className="exchange-container">
@@ -154,8 +168,14 @@ function Exchange() {
           ) : (
             activeCurrencies.map(currency => {
               const isSource = currency === sourceCurrency;
-              const rawAmount = isSource ? (parseFloat(sourceAmount) || 0) : calculateAmount(currency);
-              const displayAmount = isSource ? sourceAmount : formatNumber(rawAmount);
+              const rawAmount = isSource ? sourceAmount : calculateAmount(currency);
+              
+              // For display:
+              // If source, format the raw string input (preserve user's typing like "10.")
+              // If target, use standard number formatting with fixed decimals
+              const displayAmount = isSource 
+                ? formatInputDisplay(sourceAmount) 
+                : (typeof rawAmount === 'number' ? formatNumber(rawAmount) : '---');
 
               // Calculate Send/Recv amounts (simulated spread)
               // Sending (Buy): You pay more to get foreign currency (or bank sells high)
@@ -164,7 +184,7 @@ function Exchange() {
               // Let's interpret user request: "Standard, Sending, Receiving rates"
               
               // Standard Rate (Mid-market)
-              const standardVal = rawAmount;
+              const standardVal = isSource ? (parseFloat(sourceAmount) || 0) : rawAmount;
               
               // Calculate Send/Recv amounts (simulated spread)
               // Send (You send / Bank Sells): You pay higher rate (Value is higher)
@@ -195,7 +215,8 @@ function Exchange() {
 
                   <div className="row-input-container">
                     <input 
-                      type="number" 
+                      type="text" 
+                      inputMode="decimal"
                       value={displayAmount}
                       onChange={(e) => handleAmountChange(currency, e.target.value)}
                       className="currency-input"

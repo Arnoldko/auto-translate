@@ -8,6 +8,7 @@ const Home = () => {
       <div className="home-header">
         <div className="toolbox-icon">🧰</div>
         <h1 className="business-title">Arnold Rich<br/>Business Tool</h1>
+        <div className="business-subtitle">Global Smart Assistant</div>
       </div>
       
       <div className="menu-grid">
