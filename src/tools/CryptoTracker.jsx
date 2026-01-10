@@ -33,79 +33,78 @@ const CryptoTracker = () => {
   const [chartLoading, setChartLoading] = useState(false);
 
   useEffect(() => {
+    const fetchCoins = async () => {
+      try {
+        const response = await axios.get(
+          'https://api.coingecko.com/api/v3/coins/markets',
+          {
+            params: {
+              vs_currency: 'usd',
+              order: 'market_cap_desc',
+              per_page: 20,
+              page: 1,
+              sparkline: false,
+            },
+          }
+        );
+        setCoins(response.data);
+        if (response.data.length > 0) {
+          setSelectedCoin(response.data[0]);
+        }
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching coins:', error);
+        setLoading(false);
+      }
+    };
     fetchCoins();
   }, []);
 
   useEffect(() => {
+    const fetchCoinHistory = async (coinId) => {
+      setChartLoading(true);
+      try {
+        const response = await axios.get(
+          `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart`,
+          {
+            params: {
+              vs_currency: 'usd',
+              days: 7,
+              interval: 'daily',
+            },
+          }
+        );
+        
+        const prices = response.data.prices;
+        const labels = prices.map(price => {
+          const date = new Date(price[0]);
+          return date.toLocaleDateString();
+        });
+        const data = prices.map(price => price[1]);
+  
+        setChartData({
+          labels,
+          datasets: [
+            {
+              label: 'Price (USD) - Last 7 Days',
+              data: data,
+              borderColor: '#00c6ff',
+              backgroundColor: 'rgba(0, 198, 255, 0.5)',
+              tension: 0.1,
+            },
+          ],
+        });
+        setChartLoading(false);
+      } catch (error) {
+        console.error('Error fetching coin history:', error);
+        setChartLoading(false);
+      }
+    };
+
     if (selectedCoin) {
       fetchCoinHistory(selectedCoin.id);
     }
   }, [selectedCoin]);
-
-  const fetchCoins = async () => {
-    try {
-      const response = await axios.get(
-        'https://api.coingecko.com/api/v3/coins/markets',
-        {
-          params: {
-            vs_currency: 'usd',
-            order: 'market_cap_desc',
-            per_page: 20,
-            page: 1,
-            sparkline: false,
-          },
-        }
-      );
-      setCoins(response.data);
-      if (response.data.length > 0) {
-        setSelectedCoin(response.data[0]);
-      }
-      setLoading(false);
-    } catch (error) {
-      console.error('Error fetching coins:', error);
-      setLoading(false);
-    }
-  };
-
-  const fetchCoinHistory = async (coinId) => {
-    setChartLoading(true);
-    try {
-      const response = await axios.get(
-        `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart`,
-        {
-          params: {
-            vs_currency: 'usd',
-            days: 7,
-            interval: 'daily',
-          },
-        }
-      );
-      
-      const prices = response.data.prices;
-      const labels = prices.map(price => {
-        const date = new Date(price[0]);
-        return date.toLocaleDateString();
-      });
-      const data = prices.map(price => price[1]);
-
-      setChartData({
-        labels,
-        datasets: [
-          {
-            label: 'Price (USD) - Last 7 Days',
-            data: data,
-            borderColor: '#00c6ff',
-            backgroundColor: 'rgba(0, 198, 255, 0.5)',
-            tension: 0.1,
-          },
-        ],
-      });
-      setChartLoading(false);
-    } catch (error) {
-      console.error('Error fetching coin history:', error);
-      setChartLoading(false);
-    }
-  };
 
   const filteredCoins = coins.filter(coin =>
     coin.name.toLowerCase().includes(search.toLowerCase()) ||

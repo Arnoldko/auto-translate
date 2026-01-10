@@ -48,57 +48,56 @@ const UnitConverter = () => {
   };
 
   useEffect(() => {
+    const convert = () => {
+      const val = parseFloat(fromValue);
+      if (isNaN(val)) {
+        setToValue('');
+        return;
+      }
+  
+      // Safety check for units matching the tab
+      const currentUnits = units[activeTab];
+      if (!currentUnits) return;
+      
+      // Check if current selected units exist in this tab
+      const fromExists = currentUnits.find(u => u.id === fromUnit);
+      const toExists = currentUnits.find(u => u.id === toUnit);
+      
+      // If units mismatch (during transition), don't convert yet
+      if (!fromExists || !toExists) return;
+  
+      if (activeTab === 'temperature') {
+        let result;
+        // Convert to Celsius first
+        let celsius;
+        if (fromUnit === 'c') celsius = val;
+        else if (fromUnit === 'f') celsius = (val - 32) * 5/9;
+        else if (fromUnit === 'k') celsius = val - 273.15;
+  
+        // Convert from Celsius to Target
+        if (toUnit === 'c') result = celsius;
+        else if (toUnit === 'f') result = (celsius * 9/5) + 32;
+        else if (toUnit === 'k') result = celsius + 273.15;
+  
+        setToValue(result !== undefined ? result.toFixed(2) : '');
+      } else {
+        // Linear conversion (Length, Weight)
+        const fromFactor = fromExists.factor;
+        const toFactor = toExists.factor;
+        
+        // Convert to base unit then to target
+        const result = (val * fromFactor) / toFactor;
+        
+        // Format logic
+        if (result > 0.01 && result < 10000) {
+          setToValue(Math.round(result * 10000) / 10000);
+        } else {
+          setToValue(result.toPrecision(6));
+        }
+      }
+    };
     convert();
   }, [fromValue, fromUnit, toUnit, activeTab]);
-
-  const convert = () => {
-    const val = parseFloat(fromValue);
-    if (isNaN(val)) {
-      setToValue('');
-      return;
-    }
-
-    // Safety check for units matching the tab
-    const currentUnits = units[activeTab];
-    if (!currentUnits) return;
-    
-    // Check if current selected units exist in this tab
-    const fromExists = currentUnits.find(u => u.id === fromUnit);
-    const toExists = currentUnits.find(u => u.id === toUnit);
-    
-    // If units mismatch (during transition), don't convert yet
-    if (!fromExists || !toExists) return;
-
-    if (activeTab === 'temperature') {
-      let result;
-      // Convert to Celsius first
-      let celsius;
-      if (fromUnit === 'c') celsius = val;
-      else if (fromUnit === 'f') celsius = (val - 32) * 5/9;
-      else if (fromUnit === 'k') celsius = val - 273.15;
-
-      // Convert from Celsius to Target
-      if (toUnit === 'c') result = celsius;
-      else if (toUnit === 'f') result = (celsius * 9/5) + 32;
-      else if (toUnit === 'k') result = celsius + 273.15;
-
-      setToValue(result !== undefined ? result.toFixed(2) : '');
-    } else {
-      // Linear conversion (Length, Weight)
-      const fromFactor = fromExists.factor;
-      const toFactor = toExists.factor;
-      
-      // Convert to base unit then to target
-      const result = (val * fromFactor) / toFactor;
-      
-      // Format logic
-      if (result > 0.01 && result < 10000) {
-        setToValue(Math.round(result * 10000) / 10000);
-      } else {
-        setToValue(result.toPrecision(6));
-      }
-    }
-  };
 
   const swapUnits = () => {
     setFromUnit(toUnit);

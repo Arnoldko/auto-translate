@@ -41,7 +41,7 @@ const TextTools = () => {
         }).replace(/\s+/g, '');
         break;
       case 'sentence':
-        newText = text.toLowerCase().replace(/(^\s*\w|[\.\!\?]\s*\w)/g, c => c.toUpperCase());
+        newText = text.toLowerCase().replace(/(^\s*\w|[.!?]\s*\w)/g, c => c.toUpperCase());
         break;
       case 'inverse':
         newText = text.split('').map(c => c === c.toUpperCase() ? c.toLowerCase() : c.toUpperCase()).join('');
@@ -64,7 +64,8 @@ const TextTools = () => {
       try {
         document.execCommand('copy');
         alert('클립보드에 복사되었습니다!');
-      } catch (e) {
+      } catch (err) {
+        console.error(err);
         alert('복사에 실패했습니다. 수동으로 복사해주세요.');
       }
       document.body.removeChild(textArea);

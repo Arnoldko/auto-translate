@@ -119,7 +119,9 @@ const LocationSelector = ({ label, value, onChange }) => {
 
   // Update internal state when external value changes
   useEffect(() => {
-    setSelectedCountryCode(value.country);
+    if (value.country !== selectedCountryCode) {
+      setSelectedCountryCode(value.country);
+    }
   }, [value.country]);
 
   const handleCountrySelect = (code) => {
@@ -232,7 +234,7 @@ const Flights = () => {
   const [destination, setDestination] = useState({ country: 'US', city: 'JFK' });
   const [tripType, setTripType] = useState('round-trip'); // 'one-way', 'round-trip'
   const [departureDate, setDepartureDate] = useState(new Date().toISOString().split('T')[0]);
-  const [returnDate, setReturnDate] = useState(new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]);
+  const [returnDate, setReturnDate] = useState(() => new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]);
   const [isDirect, setIsDirect] = useState(false);
   const [sortOption, setSortOption] = useState('price_asc'); // price_asc, time_asc, time_desc
   const [results, setResults] = useState([]);
@@ -243,7 +245,7 @@ const Flights = () => {
     setDestination(origin);
   };
 
-  const generateMockFlights = () => {
+  const generateMockFlights = useCallback(() => {
     setIsSearching(true);
     setResults([]);
 
@@ -300,11 +302,11 @@ const Flights = () => {
       setResults(mockResults);
       setIsSearching(false);
     }, 1500);
-  };
+  }, [isDirect, tripType, origin.city, destination.city, sortOption]);
 
   useEffect(() => {
     generateMockFlights();
-  }, [sortOption]); // Re-sort when option changes
+  }, [generateMockFlights]); // Re-sort when option changes
 
   return (
     <div className="flights-container">

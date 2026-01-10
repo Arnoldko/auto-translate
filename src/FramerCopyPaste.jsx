@@ -1,5 +1,5 @@
 import * as React from "react"
-import { useState, useEffect, useRef } from "react"
+import { useState, useRef } from "react"
 
 // Framer에서 바로 사용할 수 있도록 모든 스타일과 로직을 하나로 합친 컴포넌트입니다.
 // This component combines all logic and styles for direct use in Framer.

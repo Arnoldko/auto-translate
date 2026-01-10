@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { QRCodeCanvas } from 'qrcode.react';
 import './Tools.css';
 
@@ -7,7 +7,6 @@ const QRCodeGenerator = () => {
   const [size, setSize] = useState(256);
   const [fgColor, setFgColor] = useState('#000000');
   const [bgColor, setBgColor] = useState('#ffffff');
-  const canvasRef = useRef(null);
 
   const downloadQRCode = () => {
     try {

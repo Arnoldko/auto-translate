@@ -17,14 +17,14 @@ const AdSenseBanner = ({ slotId, style = {}, format = 'auto', responsive = 'true
         className="adsbygoogle"
         style={{ 
             display: 'block', 
-            minHeight: '100px', // Ensure it takes up space
-            background: 'rgba(255, 255, 255, 0.05)', // Slight background to see the area
-            border: '1px dashed rgba(255, 255, 255, 0.2)', // Dashed border to mark the spot
+            minHeight: '100px', // Default min-height, can be overridden
+            background: 'rgba(255, 255, 255, 0.05)', 
+            border: '1px dashed rgba(255, 255, 255, 0.2)', 
             ...style 
         }}
         data-ad-client="ca-pub-3409572687255324"
         data-ad-slot={slotId}
-        data-ad-format={format}
+        {...(format && format !== 'false' ? { 'data-ad-format': format } : {})}
         data-full-width-responsive={responsive}
       />
     </div>

@@ -47,66 +47,66 @@ const CurrencyConverter = () => {
   ];
 
   useEffect(() => {
+    const fetchRate = async () => {
+      try {
+        setLoading(true);
+        if (fromCurrency === toCurrency) {
+          setRate(1);
+          setLoading(false);
+          return;
+        }
+        const response = await axios.get(`https://api.frankfurter.app/latest?from=${fromCurrency}&to=${toCurrency}`);
+        setRate(response.data.rates[toCurrency]);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching rate:', error);
+        setLoading(false);
+      }
+    };
+
+    const fetchHistoricalData = async () => {
+      try {
+        setChartLoading(true);
+        if (fromCurrency === toCurrency) {
+          setHistoricalData([]);
+          setChartLoading(false);
+          return;
+        }
+        
+        const endDate = new Date().toISOString().split('T')[0];
+        const startDate = new Date();
+        startDate.setMonth(startDate.getMonth() - 1); // Last 1 month
+        const startDateStr = startDate.toISOString().split('T')[0];
+
+        const response = await axios.get(`https://api.frankfurter.app/${startDateStr}..${endDate}?from=${fromCurrency}&to=${toCurrency}`);
+        
+        const rates = response.data.rates;
+        const dates = Object.keys(rates);
+        const dataPoints = dates.map(date => rates[date][toCurrency]);
+
+        setHistoricalData({
+          labels: dates,
+          datasets: [
+            {
+              label: `${fromCurrency} to ${toCurrency}`,
+              data: dataPoints,
+              borderColor: '#00e676',
+              backgroundColor: 'rgba(0, 230, 118, 0.1)',
+              tension: 0.4,
+              fill: true,
+            },
+          ],
+        });
+        setChartLoading(false);
+      } catch (error) {
+        console.error('Error fetching historical data:', error);
+        setChartLoading(false);
+      }
+    };
+
     fetchRate();
     fetchHistoricalData();
   }, [fromCurrency, toCurrency]);
-
-  const fetchRate = async () => {
-    try {
-      setLoading(true);
-      if (fromCurrency === toCurrency) {
-        setRate(1);
-        setLoading(false);
-        return;
-      }
-      const response = await axios.get(`https://api.frankfurter.app/latest?from=${fromCurrency}&to=${toCurrency}`);
-      setRate(response.data.rates[toCurrency]);
-      setLoading(false);
-    } catch (error) {
-      console.error('Error fetching rate:', error);
-      setLoading(false);
-    }
-  };
-
-  const fetchHistoricalData = async () => {
-    try {
-      setChartLoading(true);
-      if (fromCurrency === toCurrency) {
-        setHistoricalData([]);
-        setChartLoading(false);
-        return;
-      }
-      
-      const endDate = new Date().toISOString().split('T')[0];
-      const startDate = new Date();
-      startDate.setMonth(startDate.getMonth() - 1); // Last 1 month
-      const startDateStr = startDate.toISOString().split('T')[0];
-
-      const response = await axios.get(`https://api.frankfurter.app/${startDateStr}..${endDate}?from=${fromCurrency}&to=${toCurrency}`);
-      
-      const rates = response.data.rates;
-      const dates = Object.keys(rates);
-      const dataPoints = dates.map(date => rates[date][toCurrency]);
-
-      setHistoricalData({
-        labels: dates,
-        datasets: [
-          {
-            label: `${fromCurrency} to ${toCurrency}`,
-            data: dataPoints,
-            borderColor: '#00e676',
-            backgroundColor: 'rgba(0, 230, 118, 0.1)',
-            tension: 0.4,
-            fill: true,
-          },
-        ],
-      });
-      setChartLoading(false);
-    } catch (error) {
-      console.error('Error fetching historical data:', error);
-      setChartLoading(false);
-    }
-  };
 
   const handleSwap = () => {
     setFromCurrency(toCurrency);
