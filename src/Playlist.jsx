@@ -194,8 +194,10 @@ function Playlist() {
                     playsinline: 1,
                     showinfo: 0,
                     rel: 0,
-                    // origin: window.location.origin, // Removed origin as it can cause CORS issues with some videos
-                    autoplay: 1
+                    autoplay: 1,
+                    modestbranding: 1,
+                    disablekb: 1,
+                    fs: 0
                   }
                 }
               }}
