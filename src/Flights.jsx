@@ -305,8 +305,13 @@ const Flights = () => {
   }, [isDirect, tripType, origin.city, destination.city, sortOption]);
 
   useEffect(() => {
+    // Initial search only
     generateMockFlights();
-  }, [generateMockFlights]); // Re-sort when option changes
+  }, []);
+
+  // Remove the auto-search useEffect on filter changes to prevent confusion
+  // and let the user click the Search button explicitly.
+  // The generateMockFlights function is still connected to the button.
 
   return (
     <div className="flights-container">
@@ -457,7 +462,7 @@ const Flights = () => {
 
               <div className="price-section">
                 <span className="price">${flight.price}</span>
-                <button className="book-btn">선택</button>
+                <button className="book-btn" onClick={() => alert(`[데모] ${flight.airline.name} 항공권이 선택되었습니다.\n가격: $${flight.price}`)}>선택</button>
               </div>
             </div>
           ))

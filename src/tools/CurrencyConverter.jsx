@@ -209,6 +209,28 @@ const CurrencyConverter = () => {
                 </>
               )}
             </div>
+            
+            {/* Extended Rates Information */}
+            {!loading && rate && (
+              <div className="extended-rates">
+                <h3>환율 상세 정보 (예상)</h3>
+                <div className="rates-grid">
+                  <div className="rate-item">
+                    <span className="rate-label">매매기준율</span>
+                    <span className="rate-value">{rate.toFixed(2)}</span>
+                  </div>
+                  <div className="rate-item">
+                    <span className="rate-label">송금 보낼 때</span>
+                    <span className="rate-value up">{(rate * 1.01).toFixed(2)}</span>
+                  </div>
+                  <div className="rate-item">
+                    <span className="rate-label">송금 받을 때</span>
+                    <span className="rate-value down">{(rate * 0.99).toFixed(2)}</span>
+                  </div>
+                </div>
+                <p className="rate-note">* 위 환율은 은행 평균 스프레드(약 1%)를 적용한 추정치입니다.</p>
+              </div>
+            )}
           </div>
         </div>
 
