@@ -12,6 +12,11 @@ const TextTools = () => {
   const [text2, setText2] = useState('');
   const [diffResult, setDiffResult] = useState(null);
 
+  // Spell Check State
+  const [spellText, setSpellText] = useState('');
+  const [spellResult, setSpellResult] = useState(null);
+  const [isChecking, setIsChecking] = useState(false);
+
   // Counter Logic
   const getStats = (str) => {
     if (!str) return { chars: 0, words: 0, lines: 0, noSpaces: 0 };
@@ -176,6 +181,62 @@ const TextTools = () => {
                  </div>
                )}
              </div>
+          </div>
+        )}
+
+        {activeTab === 'spell' && (
+          <div className="spell-tool">
+             <div className="tool-input-group">
+               <label className="tool-label">검사할 텍스트 (한국어 맞춤법)</label>
+               <textarea
+                 className="tool-textarea"
+                 rows="10"
+                 placeholder="맞춤법을 검사할 텍스트를 입력하세요..."
+                 value={spellText}
+                 onChange={(e) => setSpellText(e.target.value)}
+                 spellCheck="false"
+               ></textarea>
+             </div>
+             
+             <div style={{ textAlign: 'center', marginTop: '20px' }}>
+               <button className="tool-btn" onClick={checkSpelling} disabled={isChecking}>
+                 {isChecking ? '검사 중...' : '맞춤법 검사하기'}
+               </button>
+             </div>
+
+             {spellResult && (
+               <div className="spell-results" style={{ marginTop: '30px' }}>
+                 <h3>검사 결과 {spellResult.length === 0 ? '✅' : `(${spellResult.length}건)`}</h3>
+                 
+                 {spellResult.length === 0 ? (
+                   <div className="success-msg" style={{ padding: '20px', background: 'rgba(0, 255, 0, 0.1)', borderRadius: '8px', color: '#4caf50' }}>
+                     발견된 맞춤법 오류가 없습니다. (단, 간단한 규칙 검사 결과입니다)
+                   </div>
+                 ) : (
+                   <div className="error-list" style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                     {spellResult.map((err, idx) => (
+                       <div key={idx} className="error-item" style={{ 
+                         padding: '15px', 
+                         background: 'rgba(255, 0, 0, 0.05)', 
+                         borderRadius: '8px',
+                         borderLeft: '4px solid #ff4d4d',
+                         textAlign: 'left'
+                       }}>
+                         <div style={{ fontWeight: 'bold', marginBottom: '5px' }}>
+                           Line {err.line}: {err.type}
+                         </div>
+                         <div style={{ marginBottom: '5px' }}>{err.msg}</div>
+                         <div style={{ color: '#4caf50' }}>추천: {err.suggestion}</div>
+                       </div>
+                     ))}
+                   </div>
+                 )}
+                 <p style={{ marginTop: '20px', fontSize: '12px', color: '#888' }}>
+                   * 이 기능은 기본적인 맞춤법 규칙(띄어쓰기, 흔한 오타)만 검사합니다. 
+                   정확한 검사를 위해서는 전문 맞춤법 검사기를 이용해주세요.
+                 </p>
+               </div>
+             )}
           </div>
         )}
       </div>
