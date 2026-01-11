@@ -355,7 +355,7 @@ body {
 
 .menu-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 30px;
   max-width: 1200px;
   width: 100%;
@@ -388,6 +388,21 @@ body {
   box-shadow: 
     0 20px 40px rgba(0,0,0,0.1),
     inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+  animation: cardFloat 6s ease-in-out infinite;
+}
+
+.icon-square:nth-child(2) {
+  animation-delay: 1s;
+}
+
+.icon-square:nth-child(3) {
+  animation-delay: 2s;
+}
+
+@keyframes cardFloat {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
 }
 
 .icon-square::before {
@@ -491,6 +506,7 @@ body {
     backdrop-filter: none; 
     background: var(--surface-dark); /* Solid fallback */
     box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    animation: none !important; /* Disable floating animation on mobile */
   }
 
   .icon-bg {
@@ -533,6 +549,10 @@ body {
     order: 2; /* Adjust order if needed, or keep standard */
     width: 100%;
     margin: 10px 0;
+    white-space: nowrap;
+    word-break: keep-all;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
   
   .header {

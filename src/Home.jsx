@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import AdSenseBanner from './AdSenseBanner';
+import MatrixBackground from './MatrixBackground';
 import './App.css'; // We can reuse App.css or create Home.css
 
 const Home = () => {
@@ -8,6 +9,7 @@ const Home = () => {
 
   return (
     <div className="home-container">
+      <MatrixBackground />
       <div className="home-header">
         {!imgError ? (
           <img 

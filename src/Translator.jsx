@@ -54,37 +54,58 @@ const LanguageSelector = ({ value, onChange }) => {
   };
 
   return (
-    <div className="custom-select-container" ref={dropdownRef}>
-      <div className="custom-select-trigger" onClick={() => setIsOpen(!isOpen)}>
-        <img 
-          src={getFlagUrl(value)} 
-          alt={value} 
-          className="lang-flag-icon"
-          onError={(e) => e.target.style.display = 'none'} 
-        />
-        <span>{selectedLang?.native || value}</span>
-        <span className={`arrow ${isOpen ? 'open' : ''}`}>▼</span>
-      </div>
-      
-      {isOpen && (
-        <div className="custom-select-options">
-          {LANGUAGES.map(lang => (
-            <div 
-              key={lang.code} 
-              className={`custom-option ${lang.code === value ? 'selected' : ''}`}
-              onClick={() => handleSelect(lang.code)}
-            >
-              <img 
-                src={getFlagUrl(lang.code)} 
-                alt={lang.code} 
-                className="lang-flag-icon-small"
-              />
-              <span className="option-text">{lang.native}</span>
-            </div>
-          ))}
+    <>
+      {/* Desktop Dropdown */}
+      <div className="custom-select-container desktop-only" ref={dropdownRef}>
+        <div className="custom-select-trigger" onClick={() => setIsOpen(!isOpen)}>
+          <img 
+            src={getFlagUrl(value)} 
+            alt={value} 
+            className="lang-flag-icon"
+            onError={(e) => e.target.style.display = 'none'} 
+          />
+          <span>{selectedLang?.native || value}</span>
+          <span className={`arrow ${isOpen ? 'open' : ''}`}>▼</span>
         </div>
-      )}
-    </div>
+        
+        {isOpen && (
+          <div className="custom-select-options">
+            {LANGUAGES.map(lang => (
+              <div 
+                key={lang.code} 
+                className={`custom-option ${lang.code === value ? 'selected' : ''}`}
+                onClick={() => handleSelect(lang.code)}
+              >
+                <img 
+                  src={getFlagUrl(lang.code)} 
+                  alt={lang.code} 
+                  className="lang-flag-icon-small"
+                />
+                <span className="option-text">{lang.native}</span>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Mobile Horizontal List */}
+      <div className="mobile-lang-list mobile-only">
+        {LANGUAGES.map(lang => (
+          <div 
+            key={lang.code} 
+            className={`mobile-lang-item ${lang.code === value ? 'selected' : ''}`}
+            onClick={() => onChange(lang.code)}
+          >
+            <img 
+              src={getFlagUrl(lang.code)} 
+              alt={lang.code} 
+              className="mobile-lang-flag"
+            />
+            <span>{lang.native}</span>
+          </div>
+        ))}
+      </div>
+    </>
   );
 };
 
