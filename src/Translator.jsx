@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './App.css';
+import './Translator.css';
 import './tools/Tools.css';
 
 // Map language codes to country codes for flags
